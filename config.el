@@ -52,3 +52,6 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; Add a timestamp when a 'TODO' item closed.
+(setq org-log-done 'time)
