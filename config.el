@@ -55,3 +55,10 @@
 
 ;; Add a timestamp when a 'TODO' item closed.
 (setq org-log-done 'time)
+
+;; File watchers
+;; Increase the file watch warning threshold, the default is 1000
+(setq lsp-file-watch-threshold 2000)
+
+;; Maximize Emacs frame on start-up
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
