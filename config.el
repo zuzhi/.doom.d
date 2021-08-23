@@ -53,6 +53,10 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+
+;; ------------------------------------------------------------------------------
+;;
+;; Org
 ;; Add a timestamp when a 'TODO' item closed.
 (setq org-log-done 'time)
 
@@ -60,5 +64,15 @@
 ;; Increase the file watch warning threshold, the default is 1000
 (setq lsp-file-watch-threshold 2000)
 
+;; Frame
 ;; Maximize Emacs frame on start-up
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;; JDL Mode
+;; Load the package
+(load "jdl-mode")
+
+;; PDF Tools
+;; Prerequisite: https://github.com/politza/pdf-tools#compiling-on-os-x
+;; Activate pdf-tools
+(pdf-loader-install)

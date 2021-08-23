@@ -48,3 +48,11 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
+
+;; ------------------------------------------------------------------------------
+;;
+;; pdf-tools
+(package! pdf-tools)
+
+(package! jdl-mode
+  :recipe (:host github :repo "zuzhi/jdl-mode"))
