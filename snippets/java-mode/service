@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: service
+# key: /service
+# --
+package tech.zhuoguo.${1:proj}.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import tech.zhuoguo.fleet.repository.$2Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class ${2:entity}Service {
+
+    private final Logger log = LoggerFactory.getLogger($2Service.class);
+
+    private final $2Repository ${2:$(downcase yas-text)}Repository;
+
+    public $2Service($2Repository ${2:$(downcase yas-text)}Repository) {
+        this.${2:$(downcase yas-text)}Repository = ${2:$(downcase yas-text)}Repository;
+    }$0
+}

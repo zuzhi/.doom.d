@@ -76,3 +76,12 @@
 ;; Prerequisite: https://github.com/politza/pdf-tools#compiling-on-os-x
 ;; Activate pdf-tools
 (pdf-loader-install)
+
+;;
+(defun org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+   "/DONE" 'tree))

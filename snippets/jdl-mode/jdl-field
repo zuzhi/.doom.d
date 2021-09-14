@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: jdl-field
+# key: /jdl-field
+# --
+${1:name} ${2:Type} /** ${3:comment} */
+$0

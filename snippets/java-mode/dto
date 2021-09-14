@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: dto
+# key: /dto
+# --
+package tech.zhuoguo.${1:proj}.service.dto;
+
+import tech.zhuoguo.$1.domain.${2:entity};
+
+public class $2DTO extends $2 {
+
+    $0
+}

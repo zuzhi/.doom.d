@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: spec-field-like
+# key: /spec-field-like
+# --
+static Specification<${1:Entity}> ${2:filed}Like(String $2) {
+    return (root, query, cb) -> cb.like(root.get($1_.$2), "%" + $2 + "%");
+}

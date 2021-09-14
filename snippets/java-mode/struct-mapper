@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: struct-mapper
+# key: /struct-mapper
+# --
+package tech.zhuoguo.${1:proj}.mapstruct;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import tech.zhuoguo.$1.domain.${2:entity};
+import tech.zhuoguo.$1.service.dto.$2DTO;
+
+@Mapper
+public interface $2StructMapper {
+
+    $2StructMapper INSTANCE = Mappers.getMapper($2StructMapper.class);
+
+    $2DTO ${2:$(downcase yas-text)}To$2DTO($2 ${2:$(downcase yas-text)});
+
+    $2 ${2:$(downcase yas-text)}DTOTo$2($2DTO ${2:$(downcase yas-text)}DTO);
+}
