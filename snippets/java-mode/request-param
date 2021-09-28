@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: request-param
+# key: /request-param
+# --
+@RequestParam(name = "${1:param}", required = false) ${2:Type} $1

@@ -1,0 +1,83 @@
+# -*- mode: snippet -*-
+# name: extend-resource
+# key: /extend-resource
+# --
+package tech.zhuoguo.${1:proj}.web.rest;
+
+import java.net.URISyntaxException;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import tech.zhuoguo.$1.domain.${2:Entity};
+import tech.zhuoguo.$1.repository.$2Repository;
+
+@RestController
+@RequestMapping("/api/v1")
+@Transactional
+public class $2ExtendResource {
+
+    private final Logger log = LoggerFactory.getLogger($2ExtendResource.class);
+
+    private static final String ENTITY_NAME = "${2:$(camelcase yas-text)}";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
+    private final $2Resource ${2:$(camelcase yas-text)}Resource;
+
+    private final $2Repository ${2:$(camelcase yas-text)}Repository;
+
+    public $2ExtendResource($2Repository ${2:$(camelcase yas-text)}Repository) {
+        this.${2:$(camelcase yas-text)}Resource = new $2Resource(${2:$(camelcase yas-text)}Repository);
+        this.${2:$(camelcase yas-text)}Repository = ${2:$(camelcase yas-text)}Repository;
+    }
+
+    @PostMapping("/${2:$(camelcase yas-text)}s")
+    public ResponseEntity<$2> create$2(@RequestBody $2 ${2:$(camelcase yas-text)}) throws URISyntaxException {
+        return ${2:$(camelcase yas-text)}Resource.create$2(${2:$(camelcase yas-text)});
+    }
+
+    @PutMapping("/${2:$(camelcase yas-text)}s/{id}")
+    public ResponseEntity<$2> update$2(@PathVariable(value = "id", required = false) final Long id, @RequestBody $2 ${2:$(camelcase yas-text)})
+        throws URISyntaxException {
+        return ${2:$(camelcase yas-text)}Resource.update$2(id, ${2:$(camelcase yas-text)});
+    }
+
+    @PatchMapping(value = "/${2:$(camelcase yas-text)}s/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<$2> partialUpdate$2(
+        @PathVariable(value = "id", required = false) final Long id,
+        @RequestBody $2 ${2:$(camelcase yas-text)}
+    ) throws URISyntaxException {
+        return ${2:$(camelcase yas-text)}Resource.partialUpdate$2(id, ${2:$(camelcase yas-text)});
+    }
+
+    @GetMapping("/${2:$(camelcase yas-text)}s")
+    public ResponseEntity<List<$2>> getAll$2s(Pageable pageable) {
+        return ${2:$(camelcase yas-text)}Resource.getAll$2s(pageable);
+    }
+
+    @GetMapping("/${2:$(camelcase yas-text)}s/{id}")
+    public ResponseEntity<$2> get$2(@PathVariable Long id) {
+        return ${2:$(camelcase yas-text)}Resource.get$2(id);
+    }
+
+    @DeleteMapping("/${2:$(camelcase yas-text)}s/{id}")
+    public ResponseEntity<Void> delete$2(@PathVariable Long id) {
+        return ${2:$(camelcase yas-text)}Resource.delete$2(id);
+    }
+}

@@ -77,7 +77,7 @@
 ;; Activate pdf-tools
 (pdf-loader-install)
 
-;;
+;; Org todo
 (defun org-archive-done-tasks ()
   (interactive)
   (org-map-entries
@@ -85,3 +85,7 @@
      (org-archive-subtree)
      (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
    "/DONE" 'tree))
+
+;; Camel case for yasnippets
+(defun camelcase (string)
+  (concat (downcase (substring string 0 1)) (substring string 1)))
