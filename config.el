@@ -76,6 +76,9 @@
 ;; Prerequisite: https://github.com/politza/pdf-tools#compiling-on-os-x
 ;; Activate pdf-tools
 (pdf-loader-install)
+;; Uses more memory; see https://github.com/politza/pdf-tools/issues/51
+(setq pdf-view-use-scaling t
+      pdf-view-use-imagemagick nil)
 
 ;; Org todo
 (defun org-archive-done-tasks ()
