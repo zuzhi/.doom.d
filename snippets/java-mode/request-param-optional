@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: request-param-optional
+# key: /rp-o
+# --
+@RequestParam(value = "${1:value}", required = false) ${2:Type} $1
