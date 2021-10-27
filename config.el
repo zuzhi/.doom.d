@@ -92,3 +92,19 @@
 ;; Camel case for yasnippets
 (defun camelcase (string)
   (concat (downcase (substring string 0 1)) (substring string 1)))
+
+;; Horizontal recenter
+;; https://stackoverflow.com/questions/1249497/command-to-center-screen-horizontally-around-cursor-on-emacs
+(defun my-horizontal-recenter ()
+  "make the point horizontally centered in the window"
+  (interactive)
+  (let ((mid (/ (window-width) 2))
+        (line-len (save-excursion (end-of-line) (current-column)))
+        (cur (current-column)))
+    (if (< mid cur)
+        (set-window-hscroll (selected-window)
+                            (- cur mid)))))
+(global-set-key (kbd "C-S-l") 'my-horizontal-recenter)
+
+;; Set eshell aliases
+(set-eshell-alias! "up" "eshell-up $1")
