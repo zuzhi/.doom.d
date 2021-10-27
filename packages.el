@@ -59,3 +59,6 @@
 ;; https://github.com/zuzhi/jdl-mode
 (package! jdl-mode
   :recipe (:host github :repo "zuzhi/jdl-mode"))
+
+;; https://github.com/clojure-emacs/cider/issues/3029#issuecomment-929738738
+(package! map :pin "bb50dba")
