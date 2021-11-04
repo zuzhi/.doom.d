@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: extend-repository-spec
+# key: /extend-repository-spec
+# --
+package tech.zhuoguo.${1:proj}.repository;
+
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+import tech.zhuoguo.fleet.domain.${2:Entity};
+
+@Repository
+public interface $2ExtendRepository extends $2Repository, JpaSpecificationExecutor<$2> {
+$0
+}
