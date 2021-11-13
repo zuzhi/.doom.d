@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: events-cancel
+# key: /events-cancel
+# --
+cancel: async (datas, { dataService, router, trigger }) => {
+    trigger.exposeData({ componentName: 'search', dataName: 'query', data: {} })
+},

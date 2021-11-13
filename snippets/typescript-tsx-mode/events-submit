@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: events-submit
+# key: /events-submit
+# --
+submit: async (datas, { dataService, router, trigger }) => {
+    trigger.exposeData({ componentName: 'search', dataName: 'query', data: { ...datas } })
+},

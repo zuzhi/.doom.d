@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: query-field
+# key: /query-field
+# --
+${1:field}: '@search://query-$1',

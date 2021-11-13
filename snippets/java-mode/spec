@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: spec
+# key: /spec
+# --
+package tech.zhuoguo.${1:proj}.web.rest.spec;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.Predicate;
+
+import org.springframework.data.jpa.domain.Specification;
+
+import tech.zhuoguo.$1.domain.${2:Entity};
+import tech.zhuoguo.$1.domain.$2_;
+
+public class $2Spec {
+
+    public static Specification<$2> getSpecs(String name) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (name != null) {
+                predicates.add(criteriaBuilder.like(root.get($2_.name), "%" + name + "%"));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+}

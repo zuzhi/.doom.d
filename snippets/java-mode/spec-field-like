@@ -3,5 +3,5 @@
 # key: /spec-field-like
 # --
 if (${1:field} != null) {
-    predicates.add(criteriaBuilder.like(root.get(Staff_.$1), "%" + $1 + "%"));
+    predicates.add(criteriaBuilder.like(root.get(${2:Entity}_.$1), "%" + $1 + "%"));
 }
