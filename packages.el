@@ -51,11 +51,21 @@
 
 ;; ------------------------------------------------------------------------------
 ;;
-;; pdf-tools
+;; Emacs support library for PDF files.
+;; https://github.com/politza/pdf-tools
 (package! pdf-tools)
 
+;; Simple major mode for editing/highlighting JDL (JHipster Domain Language) files.
+;; https://github.com/zuzhi/jdl-mode
 (package! jdl-mode
   :recipe (:host github :repo "zuzhi/jdl-mode"))
 
 ;; https://github.com/clojure-emacs/cider/issues/3029#issuecomment-929738738
 (package! map :pin "bb50dba")
+
+;; SQL
+;;(package! sql)
+;;(package! sql-indent)
+
+;; pyim
+(package! pyim-basedict)
