@@ -110,8 +110,8 @@
 (set-eshell-alias! "up" "eshell-up $1")
 
 ;; Fonts
-(setq doom-font (font-spec :family "IBM Plex Mono" :size 12 :weight 'regular)
-      doom-variable-pitch-font (font-spec :family "IBM Plex Mono" :size 12))
+(setq doom-font (font-spec :family "IBM Plex Mono" :size 14 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "IBM Plex Mono" :size 14))
 
 ;; SQL
 ;; https://dev.to/viglioni/emacs-as-sql-client-with-lsp-143l
