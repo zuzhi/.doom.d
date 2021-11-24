@@ -68,4 +68,5 @@
 ;;(package! sql-indent)
 
 ;; pyim
+(package! pyim)
 (package! pyim-basedict)
