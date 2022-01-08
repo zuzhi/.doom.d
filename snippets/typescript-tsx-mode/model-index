@@ -1,0 +1,293 @@
+# key: /model-index
+# name: model-index
+# --
+import PluginContainer from 'src/quick/plugin-container'
+import {
+	get${1:modelName}Resource
+} from 'src/data/url'
+
+const model = $0;
+
+export default function Content() {
+
+	const config: Quick.Config = {
+		plugins: [
+			{
+				componentName: 'root',
+				datas: [
+				]
+			},
+			{
+				componentName: 'search',
+				datas: [
+				],
+				ui: {
+					name: 'form',
+					width: 24,
+					height: 0,
+					config: {
+						horizontal: 'start',
+						vertical: 'start', layoutColumns: 3
+					},
+					events: {
+						submit: async (datas, { dataService, router, trigger }) => {
+						}
+					}
+				}
+			},
+			{
+				componentName: 'table',
+				datas: [
+					{
+						dataName: 'query',
+						dataSource: {
+							type: 'Constant',
+							config: {
+								initial: true,
+								data: {
+									filters: {},
+									sorter: {},
+									pagination: {
+										current: 1,
+										pageSize: 10,
+										total: 0
+									}
+								}
+							}
+						}
+					},
+					{
+						dataName: 'table',
+						dataSource: {
+							type: 'RESTful',
+							config: {
+								url: get$1Resource(),
+								method: 'get',
+								auth: 'Simple Auth',
+								params: {
+									page: '@table://query-pagination-current',
+									size: '@table://query-pagination-pageSize',
+								}
+							},
+							transform: rep => {
+								return {
+									data: rep.data,
+									total: rep.headers['x-total-count']
+								}
+							}
+						}
+					},
+					{
+						dataName: 'columns',
+						dataSource: {
+							type: 'Constant',
+							config: {
+								data: [...model.map(item => ({title: item.javadoc, dataIndex: item.fieldName})),
+									   {
+										   title: '操作',
+										   dataIndex: 'action',
+										   data: [
+											   {
+												   key: 'modify',
+												   title: '修改'
+											   },
+											   {
+												   key: 'delete',
+												   title: '删除',
+												   confirm: {
+													   content: '确认删除该记录?',
+													   ok: '确认',
+													   cancel: '取消'
+												   }
+											   }
+										   ]
+									   }
+								],
+							}
+						}
+					},
+					{
+						dataName: 'query',
+						dataSource: {
+							type: 'Reference',
+							config: {
+								componentName: 'table',
+								dataName: 'query',
+							} as Quick.ReferenceConfig,
+							transform: (rep) => {
+								return rep
+							}
+						},
+					},
+					{
+						dataName: 'toolbar',
+						dataSource: {
+							type: 'Constant',
+							config: {
+								data: [
+									{
+										key: 'new',
+										title: '新建'
+									}
+								]
+							}
+						}
+					}
+				],
+				ui: {
+					name: 'table',
+					width: 24,
+					height: 9,
+					events: {
+						onAction: async (data, { trigger, dataService }) => {
+							if (data.key === 'modify') {
+								// 获取数据
+								const rep = await dataService.sendToService('RESTful', {
+									url: get$1Resource(data.id),
+									method: 'get',
+									auth: 'Simple Auth',
+								}, { params: { token: dataService.getCookie('token') } })
+								// 设置数据
+								trigger.exposeData({ componentName: 'edit', dataName: 'values', data: rep.data })
+								// 展示弹框
+								trigger.exposeData({ componentName: 'edit', dataName: 'visible', data: true })
+							} else if (data.key === 'delete') {
+								await dataService.sendToService('RESTful', {
+									url: get$1Resource(data.id),
+									method: 'delete',
+									auth: 'Simple Auth'
+								}, { params: { token: dataService.getCookie('token') } })
+
+								trigger.refresh()
+							} else if (data.key === 'new') {
+								// 展示弹框
+								trigger.exposeData({ componentName: 'new', dataName: 'visible', data: true })
+							}
+						}
+					}
+				}
+			},
+			{
+				componentName: 'edit',
+				datas: [
+					{
+						dataName: 'data',
+						dataSource: {
+							type: 'Constant',
+							config: {
+								data: [
+									...model.map(item => ({
+										valueType: item.fieldType === 'LocalDate' ? 'date' : 'input',
+										initData: `@edit://values-${item.fieldName}`,
+										dataIndex: item.fieldName,
+										label: item.javadoc,
+									}))
+								]
+							}
+						}
+					},
+					{
+						dataName: 'visible',
+						dataSource: {
+							type: 'Constant',
+							config: {
+								data: false,
+								initial: true
+							}
+						}
+					}
+				],
+				ui: {
+					name: 'form',
+					width: 20,
+					height: 0,
+					config: {
+						layoutColumns: 1,
+						modal: {
+							title: '编辑'
+						},
+					},
+					events: {
+						ok: async (datas, { dataService, router, trigger }) => {
+							await dataService.sendToService('RESTful', {
+								url: get$1Resource(datas.id),
+								method: 'put',
+								data: datas,
+								auth: 'Simple Auth'
+							}, { params: { token: dataService.getCookie('token') } })
+
+							trigger.refresh()
+						},
+						cancel: async (datas, { dataService, router, trigger }) => {
+
+						},
+					}
+				}
+			},
+			{
+				componentName: 'new',
+				datas: [
+					{
+						dataName: 'data',
+						dataSource: {
+							type: 'Constant',
+							config: {
+								data: [
+									...model
+									.filter(item => item.fieldName !== 'id')
+									.map(item => ({
+										valueType: item.fieldType === 'LocalDate' ? 'date' : 'input',
+										dataIndex: item.fieldName,
+										label: item.javadoc,
+									}))
+								]
+							}
+						}
+					},
+					{
+						dataName: 'visible',
+						dataSource: {
+							type: 'Constant',
+							config: {
+								data: false,
+								initial: true
+							}
+						}
+					}
+				],
+				ui: {
+					name: 'form',
+					width: 20,
+					height: 0,
+					config: {
+						modal: {
+							title: '新增'
+						},
+						layoutColumns: 1
+					},
+					events: {
+						ok: async (datas, { dataService, router, trigger }) => {
+							await dataService.sendToService('RESTful', {
+								url: get$1Resource(),
+								method: 'post',
+								data: datas,
+								auth: 'Simple Auth'
+							}, { params: { token: dataService.getCookie('token') } })
+
+							trigger.refresh()
+						},
+						cancel: async (datas, { dataService, router, trigger }) => {
+
+						},
+					}
+				}
+			}
+		]
+	}
+
+	return (
+		<div style={{ height: '100%' }}>
+			<PluginContainer config={config} />
+		</div>
+	)
+}
