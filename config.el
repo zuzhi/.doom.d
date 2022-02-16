@@ -99,7 +99,6 @@
   "make the point horizontally centered in the window"
   (interactive)
   (let ((mid (/ (window-width) 2))
-        (line-len (save-excursion (end-of-line) (current-column)))
         (cur (current-column)))
     (if (< mid cur)
         (set-window-hscroll (selected-window)
@@ -211,4 +210,6 @@
 (add-hook 'sql-mode-local-vars-hook #'lsp!)
 
 ;; Enable pyim-basedict
+;; FIXME not working, still requires to run this command manually
+;; and keep get `pyim 没有安装，pyim-basedict 启用失败。` when running `doom doctor`
 (pyim-basedict-enable)

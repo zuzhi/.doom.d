@@ -70,3 +70,7 @@
 ;; pyim
 (package! pyim)
 (package! pyim-basedict)
+
+;; reveal-in-osx-finder, https://github.com/kaz-yos/reveal-in-osx-finder
+;; M-x reveal-in-osx-finder
+(package! reveal-in-osx-finder)

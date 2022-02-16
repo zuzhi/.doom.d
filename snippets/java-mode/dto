@@ -8,5 +8,10 @@ import tech.zhuoguo.$1.domain.${2:entity};
 
 public class $2DTO extends $2 {
 
-    $0
+    public $2DTO() {}
+
+    public $2DTO($2 ${2:$(camelcase yas-text)}) {
+        this.id(${2:$(camelcase yas-text)}.getId())
+            $0;
+    }
 }
