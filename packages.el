@@ -74,3 +74,6 @@
 ;; reveal-in-osx-finder, https://github.com/kaz-yos/reveal-in-osx-finder
 ;; M-x reveal-in-osx-finder
 (package! reveal-in-osx-finder)
+
+;; Use `M-x exec-path-from-shell-initialize` to initialize
+(package! exec-path-from-shell)
