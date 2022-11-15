@@ -215,8 +215,16 @@
 (pyim-basedict-enable)
 
 ;; Enable STS4 integration for lsp-java
-(require 'lsp-java-boot)
+;;(require 'lsp-java-boot)
 
 ;; to enable the lenses
-(add-hook 'lsp-mode-hook #'lsp-lens-mode)
-(add-hook 'java-mode-hook #'lsp-java-boot-lens-mode)
+;;(add-hook 'lsp-mode-hook #'lsp-lens-mode)
+;;(add-hook 'java-mode-hook #'lsp-java-boot-lens-mode)
+
+;; https://github.com/Alexander-Miller/treemacs/issues/626#issuecomment-707471200
+;; try to fix treemacs, doesn't work though
+(setq lsp-enable-links nil
+      treemacs-follow-mode nil)
+
+;; evil lombok, https://github.com/emacs-lsp/lsp-java/issues/26#issuecomment-698573923
+(setq lsp-java-vmargs '("-noverify" "-Xmx1G" "-XX:+UseG1GC" "-XX:+UseStringDeduplication" "-javaagent:/Users/zuzhi/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" "-Xbootclasspath/a:/Users/zuzhi/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar"))
