@@ -251,3 +251,12 @@
 
 ;; evil lombok, https://github.com/emacs-lsp/lsp-java/issues/26#issuecomment-698573923
 ;;(setq lsp-java-vmargs '("-noverify" "-Xmx1G" "-XX:+UseG1GC" "-XX:+UseStringDeduplication" "-javaagent:/Users/zuzhi/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" "-Xbootclasspath/a:/Users/zuzhi/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar"))
+
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
+         ("C-<tab>" . 'copilot-accept-completion-by-word)
+         :map copilot-completion-map
+         ("<tab>" . 'copilot-accept-completion)
+         ("TAB" . 'copilot-accept-completion)))

@@ -77,3 +77,7 @@
 
 ;; Use `M-x exec-path-from-shell-initialize` to initialize
 (package! exec-path-from-shell)
+
+;; copilot
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
