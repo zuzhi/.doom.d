@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: blog-post
+# key: /blog-post
+# --
+{:title "${1:title}"
+ :layout :post
+ :tags ["${2:tag}"]
+ :toc false
+ :draft true
+ :slug "${3:slug}"
+ :hide false}
+
+$0
