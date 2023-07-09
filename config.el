@@ -260,3 +260,15 @@
          :map copilot-completion-map
          ("<tab>" . 'copilot-accept-completion)
          ("TAB" . 'copilot-accept-completion)))
+
+
+;; use javascript-mode for .mjs files, typescript-mode for .mts files
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-mode))
+
+;;
+(lsp-treemacs-sync-mode 1)
+
+;;
+(defun insert-current-date-time () (interactive)
+       (insert (shell-command-to-string "echo -n $(date +%Y%m%d%H%M%S)")))
