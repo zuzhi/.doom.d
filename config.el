@@ -235,7 +235,7 @@
 ;; Enable pyim-basedict
 ;; FIXME not working, still requires to run this command manually
 ;; and keep get `pyim 没有安装，pyim-basedict 启用失败。` when running `doom doctor`
-(pyim-basedict-enable)
+;;(pyim-basedict-enable)
 
 ;; Enable STS4 integration for lsp-java
 ;;(require 'lsp-java-boot)
