@@ -263,10 +263,10 @@
 
 
 ;; use javascript-mode for .mjs files, typescript-mode for .mts files
-(add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-mode))
 
-;;
+;; enable bidirectional synchronization of lsp workspace folders and treemacs projects
 (lsp-treemacs-sync-mode 1)
 
 ;;
