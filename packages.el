@@ -81,3 +81,7 @@
 ;; copilot
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+
+;; chatgpt-shell
+(package! chatgpt-shell
+  :recipe (:host github :repo "xenodium/chatgpt-shell"))

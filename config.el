@@ -272,3 +272,6 @@
 ;;
 (defun insert-current-date-time () (interactive)
        (insert (shell-command-to-string "echo -n $(date +%Y%m%d%H%M%S)")))
+
+(after! chatgpt-shell
+  (setq chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")))
