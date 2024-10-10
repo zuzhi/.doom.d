@@ -135,143 +135,84 @@
 (setq doom-font (font-spec :family "IBM Plex Mono" :size 14 :weight 'regular)
       doom-variable-pitch-font (font-spec :family "IBM Plex Mono" :size 14))
 
-;; SQL
-;; https://dev.to/viglioni/emacs-as-sql-client-with-lsp-143l
-;;;###autoload
-;;(defmacro any-nil? (&rest args)
-;;  `(not (and ,@args)))
-;;
-;;;;;###autoload
-;;(defmacro throw-if (condition &optional error-description)
-;;  "if condition is true, thrown an error"
-;;  `(if ,condition (error (or ,error-description ""))))
-;;
-;;;; Variables related to sql configs
-;;(setq lsp-sqls-connections nil)
-;;(setq sql-connection-alist nil)
-;;
-;;;;;###autoload
-;;(defun format-postgres-sqls (host port user password db)
-;;  (format "host=%s port=%s user=%s password=%s dbname=%s"
-;;          host port user password db))
-;;
-;;;;;###autoload
-;;(defun format-mysql-sqls (host port user password db)
-;;  (format "%s:%s@tcp(%s:%s)/%s" user password host port db))
-;;
-;;;;;###autoload
-;;(defun format-postgres-uri (host port user password db)
-;;  (format "postgresql://%s:%s@%s:%s/%s" user password host port db))
-;;
-;;
-;;;;;###autoload
-;;(defun add-to-sqls-connections (db-type data-src-name)
-;;  (add-to-list 'lsp-sqls-connections
-;;               (list (cons 'driver db-type)
-;;                     (cons 'dataSourceName data-src-name))))
-;;
-;;;;;###autoload
-;;(defmacro add-to-sql-conection-alist (db-type name host port user password db)
-;;  `(add-to-list 'sql-connection-alist
-;;                (list (quote ,name)
-;;                     (list 'sql-product (quote ,db-type))
-;;                     (list 'sql-user ,user)
-;;                     (list 'sql-server ,host)
-;;                     (list 'sql-port ,port)
-;;                     (list 'sql-password ,password)
-;;                     (list 'sql-database ,db))))
-;;
-;;;;;###autoload
-;;(defmacro sql-add-postgres-db (name &rest db-info)
-;;  "Adds a mysql database to emacs and lsp
-;;   This macro expects a name to the database and a p-list of parameters
-;;   :port, :user, :password, :database, :host
-;;   The only optional is :port, its default value is 5432
-;;   e.g.:
-;;   (sql-add-postgres-db
-;;        my-db-name ;; notice that there are no quotes here
-;;        :port 1234
-;;        :user \"username\"
-;;        :host \"my-host\"
-;;        :database \"my-db\"
-;;        :password \"mypassword\")"
-;;  `(let ((port (or ,(plist-get db-info :port) 5432))
-;;         (user ,(plist-get db-info :user))
-;;         (password ,(plist-get db-info :password))
-;;         (host ,(plist-get db-info :host))
-;;         (db ,(plist-get db-info :database)))
-;;     (throw-if (any-nil? user password host db (quote ,name)) "there are info missing!")
-;;     (let ((full-uri (format-postgres-uri host port user password db))
-;;           (data-src-name (format-postgres-sqls host port user password db)))
-;;       (add-to-sqls-connections "postgresql" data-src-name)
-;;       (add-to-sql-conection-alist 'postgres ,name host port user password full-uri))))
-;;
-;;;;;###autoload
-;;(defmacro sql-add-mysql-db (name &rest db-info)
-;;  "Adds a mysql database to emacs and lsp
-;;   This macro expects a name to the database and a p-list of parameters
-;;   :port, :user, :password, :database, :host
-;;   The only optional is :port, its default value is 3306
-;;   e.g.:
-;;   (sql-add-mysql-db
-;;        my-db-name ;; notice that there are no quotes here
-;;        :port 1234
-;;        :user \"username\"
-;;        :host \"my-host\"
-;;        :database \"my-db\"
-;;        :password \"mypassword\")"
-;;  `(let ((port (or ,(plist-get db-info :port) 3306))
-;;         (user ,(plist-get db-info :user))
-;;         (password ,(plist-get db-info :password))
-;;         (host ,(plist-get db-info :host))
-;;         (db ,(plist-get db-info :database)))
-;;     (throw-if (any-nil? user password host db (quote ,name)) "there are info missing!")
-;;     (add-to-sqls-connections "mysql" (format-mysql-sqls host port user password db))
-;;     (add-to-sql-conection-alist 'mysql ,name host port user password db)))
-
-;; Add hook to sql file
-(add-hook 'sql-mode-local-vars-hook #'lsp!)
-
-;; Enable pyim-basedict
-;; FIXME not working, still requires to run this command manually
-;; and keep get `pyim 没有安装，pyim-basedict 启用失败。` when running `doom doctor`
-;;(pyim-basedict-enable)
-
-;; Enable STS4 integration for lsp-java
-;;(require 'lsp-java-boot)
-
-;; to enable the lenses
-;;(add-hook 'lsp-mode-hook #'lsp-lens-mode)
-;;(add-hook 'java-mode-hook #'lsp-java-boot-lens-mode)
-
 ;; https://github.com/Alexander-Miller/treemacs/issues/626#issuecomment-707471200
 ;; try to fix treemacs, doesn't work though
 (setq lsp-enable-links nil
       treemacs-follow-mode nil)
 
-;; evil lombok, https://github.com/emacs-lsp/lsp-java/issues/26#issuecomment-698573923
-;;(setq lsp-java-vmargs '("-noverify" "-Xmx1G" "-XX:+UseG1GC" "-XX:+UseStringDeduplication" "-javaagent:/Users/zuzhi/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" "-Xbootclasspath/a:/Users/zuzhi/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar"))
-
 ;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
-         ("C-<tab>" . 'copilot-accept-completion-by-word)
-         :map copilot-completion-map
-         ("<tab>" . 'copilot-accept-completion)
-         ("TAB" . 'copilot-accept-completion)))
+;;(use-package! copilot
+;;  :hook (prog-mode . copilot-mode)
+;;  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
+;;         ("C-<tab>" . 'copilot-accept-completion-by-word)
+;;         :map copilot-completion-map
+;;         ("<tab>" . 'copilot-accept-completion)
+;;         ("TAB" . 'copilot-accept-completion)))
 
 
 ;; use javascript-mode for .mjs files, typescript-mode for .mts files
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-mode))
 
-;; enable bidirectional synchronization of lsp workspace folders and treemacs projects
-(lsp-treemacs-sync-mode 1)
-
 ;;
 (defun insert-current-date-time () (interactive)
        (insert (shell-command-to-string "echo -n $(date +%Y%m%d%H%M%S)")))
 
+(defun insert-current-date () (interactive)
+       (insert (shell-command-to-string "echo -n $(date +%Y%m%d)")))
+
 (after! chatgpt-shell
   (setq chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")))
+
+;;
+(defun copy-current-line-position-to-clipboard ()
+  "Copy current line in file to clipboard as '</path/to/file>:<line-number>'"
+  (interactive)
+  (let ((path-with-line-number
+         (concat (buffer-file-name) ":" (number-to-string (line-number-at-pos)))))
+    (x-select-text path-with-line-number)
+    (message (concat path-with-line-number " copied to clipboard"))))
+
+(define-key global-map (kbd "M-l") 'copy-current-line-position-to-clipboard)
+
+(setq lsp-java-configuration-runtimes '[(:name "JavaSE-17"
+                                         :path "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
+                                         :default t)])
+
+;; Disable the LSP formatter universally
+;;(setq +format-with-lsp nil)
+
+;;(add-hook 'java-mode-hook #'format-all-mode)
+
+;; Ensure clay is loaded
+(after! clojure-mode
+  (require 'clay))
+
+;; Keybindings for Clay functions
+(map! :map clojure-mode-map
+      :localleader
+      (:prefix ("l" . "clay")
+        :desc "Start Clay" "s" #'clay-start
+        :desc "Make HTML from namespace" "h" #'clay-make-ns-html
+        :desc "Make Quarto HTML from namespace" "q" #'clay-make-ns-quarto-html
+        :desc "Make Reveal.js slideshow" "r" #'clay-make-ns-quarto-revealjs
+        :desc "Make last sexp" "l" #'clay-make-last-sexp
+        :desc "Make defun at point" "f" #'clay-make-defun-at-point))
+
+;; Function to check if the current namespace is within "notebooks"
+(defun my/clojure-namespace-in-notebooks-p ()
+  "Check if the current Clojure file is in a `notebooks` namespace."
+  (save-excursion
+    (goto-char (point-min))
+    (re-search-forward "^\\s-*(ns +\\(noj-book\\)" nil t)))
+
+;; Auto render Clay HTML on save only for namespaces under "notebooks"
+(defun my/clay-auto-render-on-save ()
+  "Automatically render with Clay when in a `notebooks` namespace."
+  (when (my/clojure-namespace-in-notebooks-p)
+    (clay-make-ns-html)))
+
+;; Add the after-save hook only in clojure-mode
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (add-hook 'after-save-hook #'my/clay-auto-render-on-save nil t)))

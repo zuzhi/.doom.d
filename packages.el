@@ -85,3 +85,12 @@
 ;; chatgpt-shell
 (package! chatgpt-shell
   :recipe (:host github :repo "xenodium/chatgpt-shell"))
+
+;; format-all
+(package! format-all)
+
+;; terraform-mode
+(package! terraform-mode)
+
+;; clay
+(package! clay)
