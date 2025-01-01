@@ -199,24 +199,6 @@
         :desc "Make last sexp" "l" #'clay-make-last-sexp
         :desc "Make defun at point" "f" #'clay-make-defun-at-point))
 
-;; Function to check if the current namespace is within "notebooks"
-(defun my/clojure-namespace-in-notebooks-p ()
-  "Check if the current Clojure file is in a `notebooks` namespace."
-  (save-excursion
-    (goto-char (point-min))
-    (re-search-forward "^\\s-*(ns +\\(noj-book\\)" nil t)))
-
-;; Auto render Clay HTML on save only for namespaces under "notebooks"
-(defun my/clay-auto-render-on-save ()
-  "Automatically render with Clay when in a `notebooks` namespace."
-  (when (my/clojure-namespace-in-notebooks-p)
-    (clay-make-ns-html)))
-
-;; Add the after-save hook only in clojure-mode
-(add-hook 'clojure-mode-hook
-          (lambda ()
-            (add-hook 'after-save-hook #'my/clay-auto-render-on-save nil t)))
-
 ;; [Developing Metabase with Emacs](https://www.metabase.com/docs/latest/developers-guide/emacs)
 (setq custom-file (concat user-emacs-directory ".custom.el")) ; tell Customize to save customizations to ~/.emacs.d/.custom.el
 (ignore-errors                                                ; load customizations from ~/.emacs.d/.custom.el
