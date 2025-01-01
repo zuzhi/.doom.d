@@ -216,3 +216,12 @@
 (add-hook 'clojure-mode-hook
           (lambda ()
             (add-hook 'after-save-hook #'my/clay-auto-render-on-save nil t)))
+
+;; [Developing Metabase with Emacs](https://www.metabase.com/docs/latest/developers-guide/emacs)
+(setq custom-file (concat user-emacs-directory ".custom.el")) ; tell Customize to save customizations to ~/.emacs.d/.custom.el
+(ignore-errors                                                ; load customizations from ~/.emacs.d/.custom.el
+  (load-file custom-file))
+
+;; eww
+;; ignore popup for eww
+(set-popup-rule! "^\\*eww" :ignore t) ; Prevent EWW from being treated as a popup
