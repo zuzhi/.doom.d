@@ -94,3 +94,6 @@
 
 ;; clay
 (package! clay)
+
+;; sqlformat
+(package! sqlformat)

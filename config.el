@@ -89,7 +89,7 @@
 
 ;; File watchers
 ;; Increase the file watch warning threshold, the default is 1000
-(setq lsp-file-watch-threshold 2000)
+(setq lsp-file-watch-threshold 4000)
 
 ;; JDL Mode
 ;; Load the package
@@ -191,7 +191,7 @@
 ;; Keybindings for Clay functions
 (map! :map clojure-mode-map
       :localleader
-      (:prefix ("l" . "clay")
+      (:prefix ("l" "clay")
         :desc "Start Clay" "s" #'clay-start
         :desc "Make HTML from namespace" "h" #'clay-make-ns-html
         :desc "Make Quarto HTML from namespace" "q" #'clay-make-ns-quarto-html
@@ -207,3 +207,128 @@
 ;; eww
 ;; ignore popup for eww
 (set-popup-rule! "^\\*eww" :ignore t) ; Prevent EWW from being treated as a popup
+
+;; sqlformat on save
+(use-package sqlformat
+  :commands (sqlformat sqlformat-buffer sqlformat-region)
+  :hook (sql-mode sqlformat-on-save-mode)
+  :init
+  (setq sqlformat-command 'pgformatter
+        sqlformat-args '("-s2" "-g" "-u1")))
+
+;; duckdb
+
+;;;###autoload
+(defun sql-duckdb (&optional buffer)
+  "Run duckdb as an inferior process.
+
+
+If buffer `*SQL*' exists but no process is running, make a new process.
+If buffer exists and a process is running, just switch to buffer
+`*SQL*'.
+
+Interpreter used comes from variable `sql-duckdb-program'.  Login uses
+the variables `sql-user', `sql-password', `sql-database', and
+`sql-server' as defaults, if set.  Additional command line parameters
+can be stored in the list `sql-duckdb-options'.
+
+The buffer is put in SQL interactive mode, giving commands for sending
+input.  See `sql-interactive-mode'.
+
+To set the buffer name directly, use \\[universal-argument]
+before \\[sql-duckdb].  Once session has started,
+\\[sql-rename-buffer] can be called separately to rename the
+buffer.
+
+To specify a coding system for converting non-ASCII characters
+in the input and output to the process, use \\[universal-coding-system-argument]
+before \\[sql-duckdb].  You can also specify this with \\[set-buffer-process-coding-system]
+in the SQL buffer, after you start the process.
+The default comes from `process-coding-system-alist' and
+`default-process-coding-system'.
+
+\(Type \\[describe-mode] in the SQL buffer for a list of commands.)"
+  (interactive "P")
+  (sql-product-interactive 'duckdb buffer))
+(defun sql-duckdb-completion-object (sqlbuf _schema)
+  (sql-redirect-value sqlbuf "show tables" "^\\(\\sw\\(?:\\sw\\|\\s_\\)*\\)," 1))
+
+(defcustom sql-duckdb-program (or (executable-find "duckdb")
+                                  "duckdb")
+  "Command to start duckdub.
+
+Starts `sql-interactive-mode' after doing some setup."
+  :type 'file
+  :group 'SQL)
+
+(defcustom sql-duckdb-options nil
+  "List of additional options for `sql-duckdb-program'."
+  :type '(repeat string)
+  :version "20.8" ;; FIXME: What is this?
+  :group 'SQL)
+
+(defcustom sql-duckdb-login-params '((database :file nil
+                                               :must-match confirm))
+  "List of login parameters needed to connect to duckdb."
+  :type 'sql-login-params
+  :version "26.1"
+  :group 'SQL)
+
+(with-eval-after-load 'sql
+  (add-to-list 'sql-product-alist
+               '(duckdb
+                 :name "duckdb"
+                 :free-software nil
+                 :font-lock sql-mode-sqlite-font-lock-keywords  ;; Use sqlite for now
+                 :sqli-program sql-duckdb-program
+                 :sqli-options sql-duckdb-options
+                 :sqli-login sql-duckdb-login-params
+                 :sqli-comint-func sql-comint-sqlite
+                 :list-all "show tables"
+                 :list-table "describe %s"
+                 :completion-object sql-duckdb-completion-object
+                 :prompt-regexp "^D "
+                 :prompt-length 2
+                 :prompt-cont-regexp "^> ")))
+
+(require 'ob-sql)
+
+(defvar org-babel-default-header-args:duckdb
+  '((:results . "output") (:exports . "both"))
+  "Default arguments for evaluating a DuckDB code block.")
+
+(defun org-babel-execute:duckdb (body params)
+  "Execute a block of DuckDB SQL code with org-babel.
+This function is called by `org-babel-execute-src-block'."
+  (let* ((processed-params (org-babel-process-params params))
+         (db (or (cdr (assq :db processed-params))
+                 (error "No database specified")))
+         (sqlcmd (or (executable-find sql-duckdb-program)
+                     (error "DuckDB executable not found")))
+         (query body))
+    (with-temp-buffer
+      (call-process sqlcmd nil t nil db "-batch" "-csv" query)
+      ;; Capture and return the buffer's contents.
+      (buffer-string))))
+
+(add-to-list 'org-babel-tangle-lang-exts '("duckdb" . "sql"))
+
+(with-eval-after-load 'sql
+  (add-to-list 'org-babel-load-languages '(duckdb . t)))
+
+;; Add duckdb to the list of org-babel languages with SQL syntax highlighting
+(add-to-list 'org-src-lang-modes '("duckdb" . sql))
+
+(defun my-dabbrev-syntax-fix ()
+  "Modify syntax table for dabbrev to treat / as a separator."
+  (modify-syntax-entry ?/ " "))
+(add-hook 'org-mode-hook 'my-dabbrev-syntax-fix) ; Apply to text-mode
+
+;;
+(after! typescript-mode
+  (setq typescript-indent-level 2))
+
+(after! web-mode
+  (setq web-mode-markup-indent-offset 2)  ;; For JSX/TSX HTML-like syntax
+  (setq web-mode-css-indent-offset 2)     ;; For CSS inside JSX/TSX
+  (setq web-mode-code-indent-offset 2))  ;; For JS/TS code inside JSX/TSX
